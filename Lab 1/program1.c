@@ -24,24 +24,24 @@ int main(int argc, char *argv[]){
 		exit(-1);
 	}
 
-	int fd1;
+	int fd;
     char buffer[1024], texto[50];
 	int numbytes, lectura;
 	
-	if ((fd1 = open(argv[1],O_RDONLY)) < 0){
+	if ((fd = open(argv[1],O_RDONLY)) < 0){
         printf("\nError %d en open",errno);
         perror("\nError en open");
         exit(EXIT_FAILURE);
     }
 
-	read(fd1, &lectura, sizeof(int));
+	read(fd, &lectura, sizeof(int));
 	printf("Source port is %d\n", lectura);
-	read(fd1, &lectura, sizeof(int));
+	read(fd, &lectura, sizeof(int));
 	printf("Destination port is %d\n", lectura);
-	read(fd1, &lectura, sizeof(int));
+	read(fd, &lectura, sizeof(int));
 	printf("Length is %d\n", lectura);
-	read(fd1, &lectura, sizeof(int));
+	read(fd, &lectura, sizeof(int));
 	printf("Cheksum is %d\n", lectura);
-	read(fd1, &buffer, 32 * sizeof(char));
+	read(fd, &buffer, 32 * sizeof(char));
 	printf("Data is %s\n", buffer);
 }
