@@ -1,3 +1,14 @@
+/*
+	Given the following file - testpak- write a program that reads
+	from this file a "packet" with the following structure (using
+	I/O system calls) and display the contents of the "fields":
+		• source port - integer 0-65535
+		• destination port - integer 0-65535
+		• length - integer 0-65535
+		• checksum - integer 0-65535
+		• data - character array of size 32
+*/
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
