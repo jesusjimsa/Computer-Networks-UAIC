@@ -20,7 +20,7 @@ int main(){
 			exit(1);
 
 		case 0:
-			printf(" PC: Proces Copil!\n");
+			printf(" CP: Child Process!\n");
 			printf(" PC: Am PID-ul %d\n", getpid());
 			printf(" PC: PID-ul parintelui este %d\n", getppid());
 			printf(" PC: Da-mi un status de iesire: ");
