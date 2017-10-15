@@ -26,12 +26,7 @@ void sighandler(int sig){
 	}
 	else{
 		if(sig == SIGINT){
-			printf("SIGINT ignored");
-		}
-		else{
-			if(sig == SIGINT){
-				exit();
-			}
+			printf("\nSIGINT ignored\n");
 		}
 	}
 }
@@ -39,8 +34,9 @@ void sighandler(int sig){
 int main(){
 	for(int i = 0; ; i++){	//true
 		signal(SIGUSR1, sighandler);
+		
 		if(i < 20){
-			printf("SIGINT ignored");
+			signal(SIGINT, sighandler);
 		}
 
 		printf("My process ID : %d\n", getpid());
