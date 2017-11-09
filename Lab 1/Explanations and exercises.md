@@ -25,6 +25,7 @@ The typical file system directory in a Linux distribution includes the following
 * var - variable sized files that are modified frequently (e.g., logs)  
 
 To obtain information about a command, its options and parameters, the command can be run using the --help option (typically available). Also, detailed information about the command are provided in the manual, accessible through man the-command or info the-command. 
+
 ### 1.1. Commands for operations on the file system
 * ls - Lists the files in a directory (default: the current one). Option -l displays the entries in detailed format. Option -a displays the hidden files (name starting with .)
 * stat [options] [path] - Displays various informations about the file in the path according to the given options.
@@ -34,6 +35,7 @@ To obtain information about a command, its options and parameters, the command c
 * cd [path] - Changes the current path.
 * mkdir [path] - Creates the directory specified in the path.
 For more information about the commands please consult the manual. 
+
 ### 1.2. Commands for operations with text files
 * cat [file] - Displays the entire content of the file.
 * less [file] - Displays the content of the file page by page.
@@ -42,8 +44,10 @@ For more information about the commands please consult the manual.
 * grep [regular expression] [file] - Searches and displays the lines within the file which comply with the regular expression.
 * cut [options] [file] - Extracts certain fields from the file lines based on the selected options.
 * diff [file1] [file2] - Compares the files and displays the differences.
-* wc [file] - (word count) Displays the number of lines, words and characters in a file.
+* wc [file] - (word count) Displays the number of lines, words and characters in a file.  
+
 For more information about the commands please consult the manual.. For editing text files using the console shell various editors can be used: nano, mcedit (simpler) or vim, emacs (more complex). 
+
 ### 1.3. Access rights
 The access rights on a file can be checked by calling the ls command using option -l. The access rights are displayed in the first field of each entry corresponding to a file. This field contains 10 characters and is formed of four sections. The first section consists in the first character and identifies the type of file ('-' normal file, 'd' directory, 'p' named pipe, etc). The following sections display the access rights on the file. Each section is formed of three characters. The '-' character represents the absence of a right. The 'r' character represents the right to read. The 'w' character represents the right to write. The 'x' character represents the right to execute. Therefore, a section indicating complete rights would be 'rwx'. The first section represents the rights of the file owner. The second section represents the rights of the group. The last section represents the rights of the other users. As an example a set of access rights that permits all operations to the file owner and just reading to the rest of users on a normal file would look like: '-rwxr--r--' . For directories, the execution right refers to the capability to change the current path to the directory and to access its contents, not to list its contents (which corresponds to the right to read). When for a directory, instead of the execution right 'x' is set a 't', this represents that the directory has the 'sticky bit' set. This means that the deletion or the change of files form that directory can be performed only by the directory owners.  
 Another value that can be set instead the execution right 'x' is 's'. This indicates (according to the section) that the file has the SUID (Set User ID) bit set or the SGID (Set Group ID) bit set. The setting of this bit means that the file can be executed by anybody with the rights of the owner, or respectively of the group of which the file belongs. The main usage of this bit is to permit other users to execut a command that requires root rights. The change of the access rights can be done by using the following command chmod [users category] [+-=] [rights] [path]. The users category can be 'u' - owner, 'g' - group, 'o' - others or 'a' - all categories. The rights are specified using the characters previously mentioned ('r', 'w', 'x', etc). The chmod command can also be executed using values in base 8 representing the rights in each section. For more information, please consult the manual. 
