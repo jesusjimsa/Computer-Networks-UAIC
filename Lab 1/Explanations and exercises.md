@@ -49,19 +49,19 @@ For more information about the commands please consult the manual.
 For more information about the commands please consult the manual.. For editing text files using the console shell various editors can be used: nano, mcedit (simpler) or vim, emacs (more complex). 
 
 ### 1.3. Access rights
-The access rights on a file can be checked by calling the ls command using option -l. The access rights are displayed in the first field of each entry corresponding to a file. This field contains 10 characters and is formed of four sections. The first section consists in the first character and identifies the type of file ('-' normal file, 'd' directory, 'p' named pipe, etc). The following sections display the access rights on the file. Each section is formed of three characters. The '-' character represents the absence of a right. The 'r' character represents the right to read. The 'w' character represents the right to write. The 'x' character represents the right to execute. Therefore, a section indicating complete rights would be 'rwx'. The first section represents the rights of the file owner. The second section represents the rights of the group. The last section represents the rights of the other users. As an example a set of access rights that permits all operations to the file owner and just reading to the rest of users on a normal file would look like: '-rwxr--r--' . For directories, the execution right refers to the capability to change the current path to the directory and to access its contents, not to list its contents (which corresponds to the right to read). When for a directory, instead of the execution right 'x' is set a 't', this represents that the directory has the 'sticky bit' set. This means that the deletion or the change of files form that directory can be performed only by the directory owners.  
-Another value that can be set instead the execution right 'x' is 's'. This indicates (according to the section) that the file has the SUID (Set User ID) bit set or the SGID (Set Group ID) bit set. The setting of this bit means that the file can be executed by anybody with the rights of the owner, or respectively of the group of which the file belongs. The main usage of this bit is to permit other users to execut a command that requires root rights. The change of the access rights can be done by using the following command chmod [users category] [+-=] [rights] [path]. The users category can be 'u' - owner, 'g' - group, 'o' - others or 'a' - all categories. The rights are specified using the characters previously mentioned ('r', 'w', 'x', etc). The chmod command can also be executed using values in base 8 representing the rights in each section. For more information, please consult the manual. 
+The access rights on a file can be checked by calling the ls command using option -l. The access rights are displayed in the first field of each entry corresponding to a file. This field contains 10 characters and is formed of four sections. The first section consists in the first character and identifies the type of file ('-' normal file, 'd' directory, 'p' named pipe, etc). The following sections display the access rights on the file. Each section is formed of three characters. The '-' character represents the absence of a right. The 'r' character represents the right to read. The 'w' character represents the right to write. The 'x' character represents the right to execute. Therefore, a section indicating complete rights would be 'rwx'. The first section represents the rights of the file owner. The second section represents the rights of the group. The last section represents the rights of the other users. As an example a set of access rights that permits all operations to the file owner and just reading to the rest of users on a normal file would look like: '-rwxr--r--'. For directories, the execution right refers to the capability to change the current path to the directory and to access its contents, not to list its contents (which corresponds to the right to read). When for a directory, instead of the execution right 'x' is set a 't', this represents that the directory has the 'sticky bit' set. This means that the deletion or the change of files form that directory can be performed only by the directory owners.  
+Another value that can be set instead the execution right 'x' is 's'. This indicates (according to the section) that the file has the SUID (Set User ID) bit set or the SGID (Set Group ID) bit set. The setting of this bit means that the file can be executed by anybody with the rights of the owner, or respectively of the group of which the file belongs. The main usage of this bit is to permit other users to execut a command that requires root rights. The change of the access rights can be done by using the following command chmod [users category] [+-=] [rights] [path]. The users category can be 'u' - owner, 'g' - group, 'o' - others or 'a' - all categories. The rights are specified using the characters previously mentioned ('r', 'w', 'x', etc). The chmod command can also be executed using values in base 8 representing the rights in each section. For more information, please consult the manual. 
 ### 1.4. Redirection of inputs and outputs
-The logical devices of input/output are the following: the standard input - stdin, where the input data is read being implicitly associated with the keyboard; the standard output - stdout, where the output data is sent, being implicitly associated with the terminal; the standard error - stderr, where the errors are sent, being also implicitly associated with the terminal.  
-The redirection of inputs and outputs can be set using redirection operators. The redirection of the input can be done using the '<' operator. As an example, [program] < [filein], will redirect the input for program from filein. The redirection of the output can be done in a similar manner using the '>' operator. If the '>>' operator is used instead '>' the output data will be appended without overwriting the destination. The rediraction of the standard output can be done using the '2>' operator.  
+The logical devices of input/output are the following: the standard input - stdin, where the input data is read being implicitly associated with the keyboard; the standard output - stdout, where the output data is sent, being implicitly associated with the terminal; the standard error - stderr, where the errors are sent, being also implicitly associated with the terminal.  
+The redirection of inputs and outputs can be set using redirection operators. The redirection of the input can be done using the '<' operator. As an example, [program] < [filein], will redirect the input for program from filein. The redirection of the output can be done in a similar manner using the '>' operator. If the '>>' operator is used instead '>' the output data will be appended without overwriting the destination. The rediraction of the standard output can be done using the '2>' operator.  
 Redirecting a command as input for another command can be done using the pipe mechanism by chaining the commands using the '|' operator (e.g., ls | less). 
-
+
 ## 2. C programming on Linux. The very basics
 The compiler that will be used in Linux during the labs for C sources will be gcc (the C++ sources can be compiled with g++). For the simple compilation of a program without another option an example of the typical call is:  
 ```
 gcc file.c   
 ```
-This will result (when the compilation is error free) in an executable named by default a.out that will be placed in the current directory. To specify a name for the output file the -o option can be used followed by the name. As an example:
+This will result (when the compilation is error free) in an executable named by default a.out that will be placed in the current directory. To specify a name for the output file the -o option can be used followed by the name. As an example:
 ```
 gcc file.c -o outexe 
 ```
@@ -74,9 +74,9 @@ For linking a library the required option is -l followed immediately by the part
 gcc -lm file.c -o outexe 
 ```
 If the library does not reside in the standard locations, to be found by the linker it is needed to specify explicitly its location (including the case of the current directory), by using the -L option, in a similar manner with the -I option used for headers.
-
+
 ## 3. File handling through system calls
-A file descriptor in Linux is a simple integer used as index in a file table open by a process. The standard descriptors are:
+A file descriptor in Linux is a simple integer used as index in a file table open by a process. The standard descriptors are:
 * 0 - stdin - the standard input
 * 1 - stdout - the standard output
 * 2 - stderr - the standard error  
@@ -170,15 +170,15 @@ Other calls:
 * fchown() - modifies the owner or the group of an open file
 * fchmod() - modifies the access rights to a file
 * fchdir() - changes the current path
-
+
 ## 4. File handling through library functions
 Files can be programmatically used also through a FILE* pointer and the functions included in the stdio library. These permit formatted writing and reading of data.
 When a program is using the stdio library, for each of the three open standard streams there exists a FILE* pointer: stdin, stdout and stderr.
 The most common operations that can be performed using the stdio library are:
 * Opening and closing of files
 	
-	- FILE *fopen(const char *path, const char *mode); Opens a file. Parameters: path - path to the file, mode - the opening mode (e.g.,: "r+" - read and write) Return: pointer to the open file in case of success and NULL in case of error 
-	- int fclose(FILE * stream); Closes a file. Parameters: stream - pointer to the file to be closed Return: 0 in case of success, -1 (EOF - End Of File) in case of error 
+	- FILE *fopen(const char *path, const char *mode); Opens a file. Parameters: path - path to the file, mode - the opening mode (e.g.,: "r+" - read and write) Return: pointer to the open file in case of success and NULL in case of error 
+	- int fclose(FILE * stream); Closes a file. Parameters: stream - pointer to the file to be closed Return: 0 in case of success, -1 (EOF - End Of File) in case of error  
 * Reading and writing to a file  
 	The byte blocks version:
 	```C
@@ -235,7 +235,7 @@ int puts(const char *s);			//writes one line to stdout
 	- feof - in case of trying to read after reaching the end of the file an internal End Of File will be set and the value returned by this function will be different from 0
 	- ferror - returns a value different from 0 if an internal error flag is set (e.g., if we try to write in a file opened only in read mode)
 	- clearerr - resets the EOF and error flags
-	
+	
 * File positioning functions
 	```C
 	int fseek( FILE *stream, long offset, int whence);
@@ -248,49 +248,49 @@ int puts(const char *s);			//writes one line to stdout
 	- rewind - seteaza the position in the file at 0  
 
 Generally, in case of failure of any of the previous functions, the error code will be kept in the global variable errno. For details on the varios error codes please consult the manual entry of the function (man 2 function or man 3 function).
-
+
 ## 5. Directories
-The operations on directories are using the structures and functions defined in the dirent.h header. The data structures used in these functions are: DIR - the effective entry on disk for a directory, abstracted as a file stream, and containing a series of other entries (subdirectories and other files) struct dirent - a structure containing information associated to a DIR structure for an entry in the respective directory; includes data like the name in the d_name field as a char array or the type of the entry (file or directory) in the field d_type The functions used for handling directories are the following:
+The operations on directories are using the structures and functions defined in the dirent.h header. The data structures used in these functions are: DIR - the effective entry on disk for a directory, abstracted as a file stream, and containing a series of other entries (subdirectories and other files) struct dirent - a structure containing information associated to a DIR structure for an entry in the respective directory; includes data like the name in the d_name field as a char array or the type of the entry (file or directory) in the field d_type. The functions used for handling directories are the following:
 * opendir() - "opens" a directory DIR* opendir(const char* dirname) 
 	- dirname - pointer to the directory path
 	- return - a pointer to a DIR structure, corresponding to the first entry in the respective directory in case of success and null in case of error
-	
+	
 * readdir() - reads information about an entry in a directory struct dirent* readdir(DIR* dirp) 
 	- dirp - pointer to an entry in the directory
 	- return - a pointer to a dirent structure corresponding to the entry indicated by the DIR pointer, followed by advancing to the following entry in the same directory or null in case there is no other entry or in case of error 
-	
+	
 * rewinddir() - repositions to the first entry in the directory void rewinddir(DIR* dirp) 
 	- dirp - pointer to an entry in the directory
-	
+	
 * telldir() - obtains the index of an entry in the directory off_t telldir(DIR* dirp) 
 	- dirp - pointer to an entry in the directory
 	- return - an integer representing the current position of the entry in the directory or -1 in case of error
-	
+	
 * seekdir() - positions to a certain entry in the directory void seekdir(DIR *dir, off_t offset) 
 	- dir - pointer to the current entry in the directory
 	- offset - the new position which will indicate the current entry
-	
+	
 * closedir() - "closes" the directory int closedir(DIR* dirp) 
 	- dirp - pointer to an entry in the directory
 	- return - 0 if the closing was successful or -1 in case of error
-
+
 ## 6. Memory management - quick reminder
 We recap in this section the most used memory management functions in C. These require including the header stdlib.h:
 * malloc() - allocates a block of memory without initializing it void *malloc(size_t size);
  
 	- size - the number of bytes to allocate
 	- retur - pointer to the allocated memory, NULL in case of error
-	
+	
 * calloc() - allocates a block of memory and initializes it with 0 void *calloc(size_t nmemb, size_t size);
  
 	- nmemb - the number of blocks to allocate
 	- size - the size in bytes to allocate
 	- return - pointer to the allocated memory, NULL in case of error
-	
+	
 * free() - frees a block of memory void free(void *ptr);
  
 	- ptr - pointer to a memory location allocated using any of the previous functions
-
+
 ## 7. Exercises
 ### 7.1. Bash
 1. What is the effect of the following command line: ```echo ` who | cut -c1-9 | sort | uniq ` >> users``` ? (hint: use man to find out the effect of the commands). Rename the 'users' file into 'accounts' and copy this into a 'users' subfolder created in the current directory.
