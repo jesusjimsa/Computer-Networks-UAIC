@@ -176,9 +176,8 @@ Files can be programmatically used also through a FILE* pointer and the function
 When a program is using the stdio library, for each of the three open standard streams there exists a FILE* pointer: stdin, stdout and stderr.
 The most common operations that can be performed using the stdio library are:
 * Opening and closing of files
-	
 	- FILE *fopen(const char *path, const char *mode); Opens a file. Parameters: path - path to the file, mode - the opening mode (e.g.,: "r+" - read and write) Return: pointer to the open file in case of success and NULL in case of error 
-	- int fclose(FILE * stream); Closes a file. Parameters: stream - pointer to the file to be closed Return: 0 in case of success, -1 (EOF - End Of File) in case of error  
+	- int fclose(FILE * stream); Closes a file. Parameters: stream - pointer to the file to be closed Return: 0 in case of success, -1 (EOF - End Of File) in case of error
 * Reading and writing to a file  
 	The byte blocks version:
 	```C
