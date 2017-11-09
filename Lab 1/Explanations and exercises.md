@@ -22,8 +22,8 @@ The typical file system directory in a Linux distribution includes the following
 * usr/local - applications for use on the local machine
 * usr/sbin - other executables than included in sbin used for administrative operations on the system
 * usr/src - the source files of the applications
-* var - variable sized files that are modified frequently (e.g., logs)
-
+* var - variable sized files that are modified frequently (e.g., logs)  
+
 To obtain information about a command, its options and parameters, the command can be run using the --help option (typically available). Also, detailed information about the command are provided in the manual, accessible through man the-command or info the-command. 
 ### 1.1. Commands for operations on the file system
 * ls - Lists the files in a directory (default: the current one). Option -l displays the entries in detailed format. Option -a displays the hidden files (name starting with .)
