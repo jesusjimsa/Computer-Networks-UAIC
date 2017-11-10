@@ -15,6 +15,11 @@
 #include <stdlib.h>
 #include <time.h>
 
+char* formatdate(char* str, time_t val){
+        strftime(str, 36, "%d.%m.%Y %H:%M:%S", localtime(&val));
+        return str;
+}
+
 int main(int argc, char *argv[]){
 	if(argc < 2){
 		perror("Incorrect number of arguments\n");
@@ -25,6 +30,7 @@ int main(int argc, char *argv[]){
 	struct stat bufferTIME;
 	struct stat bufferISREG;
 	char *path = argv[0];
+	char date[36];
 
 	fd = open(path, O_RDONLY);
 
@@ -50,5 +56,5 @@ int main(int argc, char *argv[]){
 		printf("The path corresponds to a directory\n");
 	}
 
-	printf("Last modification was done %ld seconds after 1 of January 1970\n", bufferTIME.st_mtime);	//I will change it when I know how to do it right
+	printf("Last modification was done %s\n", formatdate(date, bufferTIME.st_mtime));
 }
