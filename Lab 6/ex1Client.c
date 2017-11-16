@@ -80,15 +80,18 @@ int main(int argc, char *argv[]){
 	//bzero(msg, 100);	// Esta función coloca 100 bytes a 0 en msg
 	printf("[client]Por favor ingrese un numero: ");
 	fflush(stdout);		// Obliga al ordenador a imprimir por pantalla, en lugar de mandarlo a un buffer hasta que haya hueco
-	read(0, &mensaje.number1, sizeof(int));
+	//read(0, &mensaje.number1, sizeof(int));
+	scanf("%d", &mensaje.number1);
 
 	printf("[client]Por favor ingrese otro numero: ");
 	fflush(stdout);
-	read(0, &mensaje.number2, sizeof(int));
+	//read(0, &mensaje.number2, sizeof(int));
+	scanf("%d", &mensaje.number2);
 
 	printf("[client]Por favor ingrese una operación (+, -, *  o  /): ");
 	fflush(stdout);
 	read(0, &mensaje.op, sizeof(char));
+	//scanf("%c", &mensaje.op);
 
 	/* enviando el mensaje al servidor */
 	if(write (sd, &mensaje, sizeof(mensaje)) <= 0){

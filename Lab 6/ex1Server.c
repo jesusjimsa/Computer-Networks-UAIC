@@ -128,8 +128,6 @@ int main(){
 				break;
 		}
 
-		
-
 		/* preparamos el mensaje de respuesta */
 		bzero(msgrasp, 100);
 		sprintf(msgrasp, "%d", result);
