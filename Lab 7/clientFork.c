@@ -30,6 +30,7 @@
 #include <stdlib.h>
 #include <netdb.h>
 #include <string.h>
+#include <limits.h>
 
 /* el código de error devuelto por ciertas llamadas */
 extern int errno;
@@ -44,11 +45,26 @@ struct Operation{
 	char op;		//opcode - '+','-','*' or '/'
 };
 
+struct response{
+	char message[30];
+	int result;
+};
+
+void printResponse(struct response answer){
+	if(answer.result != INT_MAX){	// There is an answer, the server is not tired
+		printf("%s %d\n", answer.message, answer.result);
+	}
+	else{	//The server is tired
+		printf("%s\n", answer.message);
+	}
+}
+
 int main(int argc, char *argv[]){
 	int sd;			// descriptor de socket
 	struct sockaddr_in server;	// la estructura utilizada para conectar
 	char msg[100];		// mensaje enviado
 	struct Operation mensaje;
+	struct response answer;
 
 	/* ¿Están todos los argumentos en la línea de comandos? */
 	if(argc != 3){
@@ -105,13 +121,14 @@ int main(int argc, char *argv[]){
     }
 
 	/* leyendo la respuesta del servidor (bloqueador de llamadas hasta que el servidor responda) */
-	if(read(sd, msg, 100) < 0){
+	if(read(sd, &answer, 100) < 0){
  		perror ("[client]Error en read() del servidor.\n");
 		return errno;
     }
 	
 	/* mostrar el mensaje recibido */
-	printf("[client]El resultado de la operacion recibido es: %s\n", msg);
+	printf("[client]El resultado de la operacion recibido es:\n");
+	printResponse(answer);
 
 	/* cerramos la conexión, hemos terminado */
 	close(sd);
