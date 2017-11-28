@@ -51,10 +51,10 @@ struct response{
 };
 
 void printResponse(struct response answer){
-	if(answer.result != INT_MAX){	// There is an answer, the server is not tired
+	if(answer.result != 0){	// There is an answer, the server is not tired
 		printf("%s %d\n", answer.message, answer.result);
 	}
-	else{	//The server is tired
+	else{	//The server is tired or the question was not right
 		printf("%s\n", answer.message);
 	}
 }
