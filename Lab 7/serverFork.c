@@ -29,6 +29,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <signal.h>
 
 /* el puerto usado */
 #define PORT 2024
@@ -42,14 +43,21 @@ struct Operation{
 	char op;		//opcode - '+','-','*' or '/'
 };
 
+struct response{
+	char message[30];
+	int result;
+};
+
 int main(){
 	struct sockaddr_in server;	// la estructura utilizada por el servidor
 	struct sockaddr_in from;
-	//char msg[100];		//mensaje recibido del cliente
-	char msgrasp[100]=" ";        //mensaje de respuesta del cliente
-	int sd;			//descriptor de socket
 	struct Operation mensaje;
-	int result;
+	//char msg[100];		//mensaje recibido del cliente
+	//char msgrasp[100]=" ";        //mensaje de respuesta del cliente
+	const char *STD_ANS = "The result is:";	//Respuesta estandar para cuando consigue resolver la operación
+	const char *STD_TIRED = "I am tired. Try another time.";	//Respuesta estandar para cuando no puede soportar más clientes
+	int sd;			//descriptor de socket
+	int clients_rnow = 0;	//Clients at the moment
 
 	/* creando un socket */
 	if ((sd = socket (AF_INET, SOCK_STREAM, 0)) == -1){
@@ -87,6 +95,7 @@ int main(){
 	while (1){
 		int client;
 		socklen_t length = sizeof(from);
+		pid_t pid; //pid2, pid3;
 
 		printf("[server]Estamos esperando el puerto %d...\n", PORT);
 		fflush(stdout);
@@ -94,61 +103,104 @@ int main(){
 		/* aceptamos un cliente (estado de bloqueo hasta que se establezca la conexión) */
 		client = accept(sd, (struct sockaddr *) &from, &length);
 
+		clients_rnow++;
+
 		/* error al aceptar una conexión de un cliente */
 		if (client < 0){
 			perror ("[server]Error en accept().\n");
 			continue;
 		}
 
-		/* se estableció la conexión, se espera el mensaje */
-		//bzero(msg, 100);
-		printf("[server]Esperamos el mensaje...\n");
-		fflush(stdout);
+		if(clients_rnow <= 3){
+			if((pid = fork()) == 0){		//Hijo
+				int result;
+				struct response answer;
+				/* se estableció la conexión, se espera el mensaje */
+				//bzero(msg, 100);
+				printf("[server]Esperamos el mensaje...\n");
+				fflush(stdout);
 
-		/* leyendo el mensaje */
-		if (read(client, &mensaje, sizeof(mensaje)) <= 0){
-			perror("[server]Error en read() del client.\n");
-			close(client);	/* cerramos la conexión con el cliente */
-			continue;		/* seguimos escuchando */
+				/* leyendo el mensaje */
+				if (read(client, &mensaje, sizeof(mensaje)) <= 0){
+					perror("[server]Error en read() del client.\n");
+					close(client);	/* cerramos la conexión con el cliente */
+					continue;		/* seguimos escuchando */
+				}
+
+				printf("[server]Mensaje recibido...\n");
+
+				/* Procedemos a realizar los cálculos */
+				switch(mensaje.op){
+					case '+':
+						result = mensaje.number1 + mensaje.number2;
+						break;
+					case '-':
+						result = mensaje.number1 - mensaje.number2;
+						break;
+					case '*':
+						result = mensaje.number1 * mensaje.number2;
+						break;
+					case '/':
+						result = mensaje.number1 / mensaje.number2;
+						break;
+					default:
+						result = INT_MAX;	//No se ha enviado una operación válida
+						break;
+				}
+
+				/* preparamos el mensaje de respuesta */
+				//bzero(msgrasp, 100);
+				//sprintf(msgrasp, "%d", result);
+				strncpy(answer.message, STD_ANS, 15);
+				answer.result = result;
+
+				//printf("[server]Enviamos el mensaje...%s\n", msgrasp);
+				printf("[server]Enviamos el mensaje...\n");
+
+				/* devolvemos el mensaje del cliente */
+				if (write (client, &answer, 100) <= 0){
+					perror ("[server]Error en write() con client.\n");
+					continue;		/* seguimos escuchando */
+				}
+				else{
+					printf ("[server]Mensaje enviado con éxito.\n");
+				}
+				
+				/* terminamos con este cliente, cerramos la conexión */
+				close (client);
+
+				/* además de cerrar la conexión cortamos la ejecución del hijo */
+				//kill(pid, SIGKILL);
+				
+				/* disminuimos el número de clientes activos */
+				clients_rnow--;
+			}
+			else{
+				printf("Soy el papi\n");
+			}
 		}
+		else{	//Too many clients
+			struct response answer;
+			
+			strncpy(answer.message, STD_TIRED, 30);
+			answer.result = 0;
 
-		printf("[server]Mensaje recibido...\n");
+			/* devolvemos el mensaje del cliente */
+			if (write (client, &answer, 100) <= 0){
+				perror ("[server]Error en write() con client.\n");
+				continue;		/* seguimos escuchando */
+			}
+			else{
+				printf ("[server]Mensaje enviado con éxito.\n");
+			}
 
-		/* Procedemos a realizar los cálculos */
-		switch(mensaje.op){
-			case '+':
-				result = mensaje.number1 + mensaje.number2;
-				break;
-			case '-':
-				result = mensaje.number1 - mensaje.number2;
-				break;
-			case '*':
-				result = mensaje.number1 * mensaje.number2;
-				break;
-			case '/':
-				result = mensaje.number1 / mensaje.number2;
-				break;
-			default:
-				result = INT_MAX;	//No se ha enviado una operación válida
-				break;
+			/* terminamos con este cliente, cerramos la conexión */
+			close (client);
+
+			clients_rnow--;
 		}
-
-		/* preparamos el mensaje de respuesta */
-		bzero(msgrasp, 100);
-		sprintf(msgrasp, "%d", result);
-
-		printf("[server]Enviamos el mensaje...%s\n", msgrasp);
-
-		/* devolvemos el mensaje del cliente */
-		if (write (client, msgrasp, 100) <= 0){
-			perror ("[server]Error en write() con client.\n");
-			continue;		/* seguimos escuchando */
-		}
-	  	else{
-			printf ("[server]Mensaje enviado con éxito.\n");
-		}
-		
-		/* terminamos con este cliente, cerramos la conexión */
-		close (client);
 	}				/* while */
+
+	free(STD_ANS);
+	free(STD_TIRED);
 }				/* main */

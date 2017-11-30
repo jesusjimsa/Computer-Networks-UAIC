@@ -62,7 +62,7 @@ void printResponse(struct response answer){
 int main(int argc, char *argv[]){
 	int sd;			// descriptor de socket
 	struct sockaddr_in server;	// la estructura utilizada para conectar
-	char msg[100];		// mensaje enviado
+	//char msg[100];		// mensaje enviado
 	struct Operation mensaje;
 	struct response answer;
 
